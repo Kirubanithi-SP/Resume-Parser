@@ -7,4 +7,3 @@ Flask-Cors
 python-dotenv
 Werkzeug     # For password hashing
 bcrypt       # Alternative/common hashing library, often used with pymongo examples
-gunicorn

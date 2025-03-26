@@ -26,8 +26,8 @@ COPY --from=builder /app /app
 RUN useradd -m appuser
 USER appuser
 
-# Make port 5000 available to the outside world
+# Make port 443 available to the outside world
 EXPOSE 443
 
-# Run the application using gunicorn
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:443", "app:app"]
+# Run the application using Flask's built-in server
+CMD ["flask", "run", "--host=0.0.0.0", "--port=443"]
