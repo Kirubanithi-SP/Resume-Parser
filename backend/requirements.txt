@@ -1,0 +1,9 @@
+# /backend/requirements.txt
+
+Flask
+pymongo[srv] # Add [srv] for mongodb+srv:// URIs
+PyJWT        # For JWT handling
+Flask-Cors
+python-dotenv
+Werkzeug     # For password hashing
+bcrypt       # Alternative/common hashing library, often used with pymongo examples
