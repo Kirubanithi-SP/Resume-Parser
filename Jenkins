@@ -1,0 +1,56 @@
+pipeline {
+    agent any
+
+    // If you have the GitHub plugin installed, this hook will trigger
+    // a build on every push to any branch.
+    triggers {
+        githubPush()
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Clone the repository that contains this Jenkinsfile
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Example: run a shell command
+                sh 'echo "Building on branch ${env.BRANCH_NAME}"'
+                // Replace with e.g. 'mvn clean package' or 'npm install && npm test'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Example test step
+                sh 'echo "Running tests…"'
+            }
+        }
+
+        stage('Archive Artifacts') {
+            when {
+                // only archive on successful builds
+                expression { currentBuild.currentResult == 'SUCCESS' }
+            }
+            steps {
+                // Adjust the pattern for whatever files you want to keep
+                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+            }
+        }
+    }
+
+    post {
+        always {
+            // e.g. clean up workspace
+            cleanWs()
+        }
+        failure {
+            mail to: 'team@example.com',
+                 subject: "Failed Build: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
+                 body: "See Jenkins console output: ${env.BUILD_URL}"
+        }
+    }
+}
